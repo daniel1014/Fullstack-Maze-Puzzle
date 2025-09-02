@@ -67,3 +67,4 @@ coverage/
 
 # --- Misc ---
 technical_PRD.md
+.cursor/**/*

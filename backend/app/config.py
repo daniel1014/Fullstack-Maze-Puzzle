@@ -4,8 +4,8 @@ from typing import List
 
 
 class Settings(BaseSettings):
-    # Database
-    DATABASE_URL: str = "postgresql+asyncpg://username:password@localhost:5432/maze_puzzle_db"
+    # Database - NO DEFAULT, must be set via environment
+    DATABASE_URL: str
     
     # JWT
     SECRET_KEY: SecretStr
@@ -14,14 +14,18 @@ class Settings(BaseSettings):
     
     # CORS
     FRONTEND_URL: str = "http://localhost:3000"
-    ALLOWED_ORIGINS: str = "http://localhost:3000,https://your-app.vercel.app"
+    ALLOWED_ORIGINS: str = "http://localhost:3000,http://127.0.0.1:3000,https://your-app.vercel.app"
     
     # App
     ENVIRONMENT: str = "development"
     APP_NAME: str = "Maze Puzzle API"
     VERSION: str = "1.0.0"
 
-    model_config = SettingsConfigDict(env_file=".env", case_sensitive=False)
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        case_sensitive=False,
+        extra="ignore",
+    )
 
     @property
     def DEBUG(self) -> bool:

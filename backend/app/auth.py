@@ -61,8 +61,8 @@ def create_access_token(subject: str, expires_delta: Optional[timedelta] = None)
 async def get_user_by_email(session: AsyncSession, email: str) -> Optional[User]:
     """Get user by email from database."""
     statement = select(User).where(User.email == email.strip().lower())
-    result = await session.exec(statement)
-    return result.first()
+    result = await session.execute(statement)
+    return result.scalar_one_or_none()
 
 
 async def authenticate_user(session: AsyncSession, email: str, password: str) -> Optional[User]:

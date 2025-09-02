@@ -188,7 +188,48 @@ def validate_puzzle_grid(grid_data: Dict[str, Any]) -> bool:
     
     if not is_position_valid(goal, rows, cols):
         raise PuzzleValidationError(f"Goal position {goal} is out of bounds")
-    
+
+    # Validate cell contents and invariants
+    allowed_literals = {" ", "S", "G", "W", "K", "D"}
+    start_count = 0
+    goal_count = 0
+    for r, row in enumerate(cells):
+        for c, cell in enumerate(row):
+            # All cells must be strings
+            if not isinstance(cell, str):
+                raise PuzzleValidationError(
+                    f"Invalid cell type at ({r},{c}). Expected string, got {type(cell).__name__}"
+                )
+            # Allow portals like 'P1', 'P2', ... in addition to literals
+            if cell not in allowed_literals and not cell.startswith("P"):
+                raise PuzzleValidationError(
+                    f"Unknown cell value '{cell}' at ({r},{c}). Allowed: {sorted(list(allowed_literals))} or 'P*'"
+                )
+            if cell == "S":
+                start_count += 1
+            elif cell == "G":
+                goal_count += 1
+
+    # Ensure the marked start/goal in grid align with coordinates provided
+    if get_cell_content(cells, start) != "S":
+        raise PuzzleValidationError(
+            "Grid invariant violated: start position does not contain 'S'"
+        )
+    if get_cell_content(cells, goal) != "G":
+        raise PuzzleValidationError(
+            "Grid invariant violated: goal position does not contain 'G'"
+        )
+
+    # Basic sanity: exactly one 'S' and one 'G' keep puzzles well-formed
+    if start_count != 1:
+        raise PuzzleValidationError(
+            f"Expected exactly one 'S' in grid, found {start_count}"
+        )
+    if goal_count != 1:
+        raise PuzzleValidationError(
+            f"Expected exactly one 'G' in grid, found {goal_count}"
+        )
+
     return True
 
 

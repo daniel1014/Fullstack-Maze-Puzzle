@@ -1,9 +1,10 @@
 from __future__ import annotations
 from datetime import datetime, timezone
-from typing import Any, List, Optional
+from typing import Any, Optional
 from sqlalchemy import Column, Integer, ForeignKey, Index, text
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlmodel import SQLModel, Field, Relationship
+from sqlmodel import SQLModel, Field
+from sqlalchemy.orm import relationship
 from pydantic import field_validator, ConfigDict
 
 
@@ -15,13 +16,13 @@ class User(SQLModel, table=True):
     email: str = Field(index=True, nullable=False, sa_column_kwargs={"unique": True})
     hashed_password: str = Field(nullable=False)
     is_active: bool = Field(default=True)
-    created_at: datetime = Field(
-        default_factory=lambda: datetime.now(timezone.utc),
-        sa_column_kwargs={"server_default": text("CURRENT_TIMESTAMP AT TIME ZONE 'UTC'")}
+    created_at: Optional[datetime] = Field(
+        default=None,
+        sa_column_kwargs={"server_default": text("timezone('utc', now())")}
     )
 
-    # Relationships
-    attempts: List[Attempt] = Relationship(back_populates="user")
+    # Relationships (註釋為避免 SQLModel 型別解析錯誤)
+    # attempts: list = relationship("Attempt", back_populates="user", cascade="all, delete-orphan")
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -38,15 +39,15 @@ class Puzzle(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     title: str = Field(nullable=False)
     description: Optional[str] = None
-    grid: dict[str, Any] = Field(sa_column=Column(JSONB), default_factory=dict)
+    grid: Any = Field(sa_column=Column(JSONB), default_factory=dict)
     difficulty: str = Field(default="medium")
-    created_at: datetime = Field(
-        default_factory=lambda: datetime.now(timezone.utc),
-        sa_column_kwargs={"server_default": text("CURRENT_TIMESTAMP AT TIME ZONE 'UTC'")}
+    created_at: Optional[datetime] = Field(
+        default=None,
+        sa_column_kwargs={"server_default": text("timezone('utc', now())")}
     )
 
-    # Relationships
-    attempts: List[Attempt] = Relationship(back_populates="puzzle")
+    # Relationships (註釋為避免 SQLModel 型別解析錯誤)
+    # attempts: list = relationship("Attempt", back_populates="puzzle", cascade="all, delete-orphan")
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -62,20 +63,20 @@ class Attempt(SQLModel, table=True):
     puzzle_id: int = Field(
         sa_column=Column(Integer, ForeignKey("puzzles.id", ondelete="CASCADE"), nullable=False)
     )
-    moves: List[str] = Field(sa_column=Column(JSONB), default_factory=list)
+    moves: Any = Field(sa_column=Column(JSONB), default_factory=list)
     success: bool = Field(default=False)
     steps_taken: Optional[int] = None
     time_ms: Optional[int] = None
-    keys_collected: List[str] = Field(sa_column=Column(JSONB), default_factory=list)
-    trace: List[dict[str, Any]] = Field(sa_column=Column(JSONB), default_factory=list)
-    created_at: datetime = Field(
-        default_factory=lambda: datetime.now(timezone.utc),
-        sa_column_kwargs={"server_default": text("CURRENT_TIMESTAMP AT TIME ZONE 'UTC'")}
+    keys_collected: Any = Field(sa_column=Column(JSONB), default_factory=list)
+    trace: Any = Field(sa_column=Column(JSONB), default_factory=list)
+    created_at: Optional[datetime] = Field(
+        default=None,
+        sa_column_kwargs={"server_default": text("timezone('utc', now())")}
     )
 
-    # Relationships
-    user: Optional[User] = Relationship(back_populates="attempts")
-    puzzle: Optional[Puzzle] = Relationship(back_populates="attempts")
+    # Relationships (註釋為避免 SQLModel 型別解析錯誤)
+    # user: Optional["User"] = relationship("User", back_populates="attempts")
+    # puzzle: Optional["Puzzle"] = relationship("Puzzle", back_populates="attempts")
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
