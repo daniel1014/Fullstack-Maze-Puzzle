@@ -53,10 +53,10 @@ SAMPLE_PUZZLES = [
             "start": {"r": 0, "c": 0},
             "goal": {"r": 4, "c": 5},
             "cells": [
-                ["S", " ", " ", "K", " ", " "],
-                [" ", "W", "W", "W", "W", " "],
-                [" ", " ", " ", " ", "D", " "],
-                ["W", "W", "W", " ", " ", " "],
+                ["S", " ", "W", "K", " ", " "],
+                ["W", "W", "W", "W", "W", " "],
+                [" ", " ", " ", "D", "W", " "],
+                ["W", "W", "W", " ", "W", " "],
                 [" ", " ", " ", " ", " ", "G"]
             ],
             "portals": {},
@@ -85,7 +85,7 @@ SAMPLE_PUZZLES = [
                 [" ", " ", " ", " ", " ", " ", " ", "G"]
             ],
             "portals": {
-                "P1": {"r": 2, "c": 3},
+                "P1": {"r": 5, "c": 6},
                 "P2": {"r": 0, "c": 7}
             },
             "rules": {
@@ -122,46 +122,55 @@ SAMPLE_PUZZLES = [
     }
 ]
 
+async def upsert_puzzle(session, puzzle_data):
+    """
+    Upsert a puzzle into the database.
+    Check if puzzle exists by title, then insert or update accordingly.
+    """
+    try:
+        # First, check if puzzle with this title already exists
+        existing_puzzle = await session.execute(
+            select(Puzzle).where(Puzzle.title == puzzle_data["title"])
+        )
+        existing = existing_puzzle.scalar_one_or_none()
+        
+        if existing:
+            # Update existing puzzle
+            for key, value in puzzle_data.items():
+                if key != "title":  # Don't update the unique identifier
+                    setattr(existing, key, value)
+            session.add(existing)
+            logger.info(f"Updated existing puzzle: {puzzle_data['title']}")
+        else:
+            # Create new puzzle
+            new_puzzle = Puzzle(**puzzle_data)
+            session.add(new_puzzle)
+            logger.info(f"Created new puzzle: {puzzle_data['title']}")
+            
+    except Exception as e:
+        logger.error(f"Error upserting puzzle '{puzzle_data['title']}': {e}")
+        raise
 
 async def seed_puzzles():
-    """Seed the database with sample puzzles."""
+    """Seed the database with sample puzzles using upsert logic."""
     try:
         async with AsyncSessionLocal() as session:
-            # Check if puzzles already exist
-            statement = select(Puzzle)
-            result = await session.execute(statement)
-            existing_puzzles = result.scalars().all()
-            
-            if existing_puzzles:
-                logger.info(f"Found {len(existing_puzzles)} existing puzzles. Skipping seed.")
-                return
-            
-            # Create puzzles
             for puzzle_data in SAMPLE_PUZZLES:
-                puzzle = Puzzle(**puzzle_data)
-                session.add(puzzle)
-                logger.info(f"Added puzzle: {puzzle.title}")
-            
+                await upsert_puzzle(session, puzzle_data)
             await session.commit()
-            logger.info(f"Successfully seeded {len(SAMPLE_PUZZLES)} puzzles!")
-            
+            logger.info(f"Successfully upserted {len(SAMPLE_PUZZLES)} puzzles!")
     except Exception as e:
         logger.error(f"Error seeding puzzles: {e}")
         raise
 
-
 async def main():
     """Main function to run the seeding."""
     logger.info("Starting puzzle seeding...")
-    
     # Initialize database if needed
     await init_db()
-    
     # Seed puzzles
     await seed_puzzles()
-    
     logger.info("Puzzle seeding completed!")
-
 
 if __name__ == "__main__":
     asyncio.run(main())
