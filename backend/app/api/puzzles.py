@@ -98,7 +98,8 @@ async def submit_attempt(
             message=result["message"],
             steps=result["steps"],
             keys_collected=result["keys_collected"],
-            trace=result["trace"]
+            trace=result["trace"],
+            time_ms=attempt_data.client_time_ms
         )
         
     except PuzzleValidationError as e:
