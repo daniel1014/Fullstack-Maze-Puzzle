@@ -26,7 +26,7 @@ export default function Home() {
           <h1 className="text-5xl font-bold text-[var(--foreground)] mb-6">
             Maze Puzzle Challenge
           </h1>
-          <p className="text-xl text-[var(--color-muted)] max-w-3xl mx-auto mb-8">
+          <p className="text-xl text-[color-mix(in_oklab,var(--foreground)_75%,transparent)] max-w-3xl mx-auto mb-8">
             Test your problem-solving skills with interactive maze puzzles. 
             Navigate through complex paths, collect keys, unlock doors, and reach the goal!
           </p>

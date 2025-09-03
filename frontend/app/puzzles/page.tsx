@@ -33,19 +33,19 @@ export default function PuzzlesPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-6">
+      <div className="min-h-screen p-6" style={{ background: 'color-mix(in oklab, var(--background) 98%, black)' }}>
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">Puzzle Challenges</h1>
+          <h1 className="text-3xl font-bold text-[var(--foreground)] mb-8">Puzzle Challenges</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, i) => (
               <Card key={i} className="animate-pulse">
                 <CardHeader>
-                  <div className="h-6 bg-gray-200 rounded mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                  <div className="h-6 bg-[var(--color-border)]/40 rounded mb-2"></div>
+                  <div className="h-4 bg-[var(--color-border)]/40 rounded w-2/3"></div>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-20 bg-gray-200 rounded mb-4"></div>
-                  <div className="h-10 bg-gray-200 rounded"></div>
+                  <div className="h-20 bg-[var(--color-border)]/40 rounded mb-4"></div>
+                  <div className="h-10 bg-[var(--color-border)]/40 rounded"></div>
                 </CardContent>
               </Card>
             ))}
@@ -57,10 +57,10 @@ export default function PuzzlesPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'color-mix(in oklab, var(--background) 98%, black)' }}>
         <Card className="max-w-md">
           <CardHeader>
-            <CardTitle className="text-red-600">Error Loading Puzzles</CardTitle>
+            <CardTitle className="text-red-500">Error Loading Puzzles</CardTitle>
             <CardDescription>
               {error instanceof Error ? error.message : 'Failed to load puzzles'}
             </CardDescription>
@@ -76,12 +76,12 @@ export default function PuzzlesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen" style={{ background: 'color-mix(in oklab, var(--background) 98%, black)' }}>
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-[var(--card)] border-b border-[var(--color-border)]">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold text-gray-900">Maze Puzzle Challenge</h1>
+            <h1 className="text-3xl font-bold text-[var(--foreground)]">Maze Puzzle Challenge</h1>
             <div className="flex items-center space-x-4">
               <Link href="/leaderboard">
                 <Button variant="outline">Leaderboard</Button>
@@ -103,8 +103,8 @@ export default function PuzzlesPage() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">
         <div className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-2">Choose Your Challenge</h2>
-          <p className="text-gray-600">
+          <h2 className="text-2xl font-semibold text-[var(--foreground)] mb-2">Choose Your Challenge</h2>
+          <p className="text-[var(--color-muted)]">
             Navigate through mazes, collect keys, unlock doors, and reach the goal. Each puzzle tests different skills!
           </p>
         </div>
@@ -112,7 +112,7 @@ export default function PuzzlesPage() {
         {/* Puzzles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {puzzles?.map((puzzle) => (
-            <Card key={puzzle.id} className="hover:shadow-lg transition-shadow cursor-pointer">
+            <Card key={puzzle.id} className="hover:shadow-lg transition-shadow cursor-pointer bg-[var(--card)] text-[var(--card-foreground)]">
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <CardTitle className="text-xl">{puzzle.title}</CardTitle>
@@ -124,12 +124,12 @@ export default function PuzzlesPage() {
                     {puzzle.difficulty}
                   </span>
                 </div>
-                <CardDescription className="text-gray-600">
+                <CardDescription className="text-[var(--color-muted)]">
                   {puzzle.description || 'Test your maze-solving skills!'}
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
+                <div className="flex justify-between items-center text-sm text-[var(--color-muted)] mb-4">
                   <span>Created: {new Date(puzzle.created_at).toISOString().slice(0, 10)}</span>
                 </div>
                 <Link href={`/puzzles/${puzzle.id}`}>

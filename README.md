@@ -2,7 +2,7 @@
 
 A full-stack interactive maze puzzle platform built with FastAPI and Next.js, featuring JWT authentication, server-side puzzle validation, real-time gameplay, and a modern React interface.
 
-![Platform Overview](frontend/public/screenshots/test-auth.png)
+![Platform Overview](frontend/public/screenshots/gameplay.png)
 
 ## 🚀 Quick Start
 
