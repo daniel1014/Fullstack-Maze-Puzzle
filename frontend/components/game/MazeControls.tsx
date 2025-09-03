@@ -63,7 +63,7 @@ export const MazeControls = memo(function MazeControls({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [canMove, onMove]);
+  }, [canMove, onMove, mode]);
 
   return (
     <div className="space-y-3">

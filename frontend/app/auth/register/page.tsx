@@ -32,8 +32,11 @@ export default function RegisterPage() {
     try {
       await authAPI.register(formData.email, formData.password);
       router.push('/auth/login?message=Registration successful! Please sign in.');
-    } catch (err: any) {
-      setError(err.response?.data?.detail || 'Registration failed. Please try again.');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error && 'response' in err 
+        ? (err as { response?: { data?: { detail?: string } } }).response?.data?.detail
+        : 'Registration failed. Please try again.';
+      setError(errorMessage || 'Registration failed. Please try again.');
     } finally {
       setIsLoading(false);
     }

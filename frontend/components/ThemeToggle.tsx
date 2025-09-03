@@ -21,7 +21,7 @@ export default function ThemeToggle() {
       aria-label={`Switch to ${next} mode`}
       title={`Switch to ${next} mode`}
       onClick={() => setTheme(next)}
-      className="border-gray-300 hover:bg-gray-50"
+      className="border-[var(--color-border)] hover:bg-[var(--muted)]"
     >
       {theme === 'dark' ? (
         <Sun className="w-4 h-4" />

@@ -19,7 +19,7 @@ export const MazeGrid = memo(function MazeGrid({
 }: MazeGridProps) {
   return (
     <div 
-      className="inline-block border border-gray-300 rounded-md p-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+      className="inline-block border border-[var(--color-border)] rounded-md p-3 bg-[var(--card)] focus:outline-none focus:ring-2 focus:ring-[var(--color-ring)]"
       onKeyDown={onKeyDown}
       tabIndex={0}
       role="grid"

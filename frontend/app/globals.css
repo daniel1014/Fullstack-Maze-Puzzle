@@ -16,6 +16,14 @@
 
   /* Shapes */
   --edukids-radius: 14px;
+
+  /* shadcn-like tokens */
+  --border: #e5e7eb; /* gray-200 */
+  --input: #e5e7eb; /* gray-200 */
+  --card: #ffffff;
+  --card-foreground: var(--foreground);
+  --muted: #f1f5f9; /* slate-100 */
+  --muted-foreground: #64748b; /* slate-500 */
 }
 
 @theme inline {
@@ -31,6 +39,11 @@
   --color-warning: var(--edukids-warning);
   --color-danger: var(--edukids-danger);
   --color-muted: var(--edukids-muted);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted-foreground: var(--muted-foreground);
   --color-ring: var(--edukids-secondary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -49,6 +62,13 @@
   --edukids-warning: #f59e0b; /* amber-500 */
   --edukids-danger: #f87171;  /* red-400 */
   --edukids-muted: #94a3b8;   /* slate-400 */
+
+  --border: #1f2937; /* gray-800 */
+  --input: #1f2937;  /* gray-800 */
+  --card: #0f172a;   /* slate-900 */
+  --card-foreground: #e5e7eb; /* gray-200 */
+  --muted: #0f172a;  /* slate-900 */
+  --muted-foreground: #9ca3af; /* gray-400 */
 }
 
 body {

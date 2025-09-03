@@ -23,10 +23,10 @@ export default function Home() {
       <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="text-center mb-16">
           <div className="text-6xl mb-6">🧩</div>
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">
+          <h1 className="text-5xl font-bold text-[var(--foreground)] mb-6">
             Maze Puzzle Challenge
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+          <p className="text-xl text-[var(--color-muted)] max-w-3xl mx-auto mb-8">
             Test your problem-solving skills with interactive maze puzzles. 
             Navigate through complex paths, collect keys, unlock doors, and reach the goal!
           </p>
@@ -86,7 +86,7 @@ export default function Home() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
-                <h3 className="text-lg font-semibold mb-4 text-gray-900">Game Elements</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[var(--foreground)]">Game Elements</h3>
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3">
                     <span className="text-2xl">🏁</span>
@@ -116,7 +116,7 @@ export default function Home() {
               </div>
               
               <div>
-                <h3 className="text-lg font-semibold mb-4 text-gray-900">Controls</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[var(--foreground)]">Controls</h3>
                 <div className="space-y-3">
                   <div><strong>Keyboard:</strong> Use arrow keys or WASD to move</div>
                   <div><strong>Mouse:</strong> Click direction buttons to move</div>
@@ -124,7 +124,7 @@ export default function Home() {
                   <div><strong>Strategy:</strong> Plan your moves to minimize steps</div>
                 </div>
                 
-                <h3 className="text-lg font-semibold mb-4 mt-8 text-gray-900">Difficulty Levels</h3>
+                <h3 className="text-lg font-semibold mb-4 mt-8 text-[var(--foreground)]">Difficulty Levels</h3>
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
                     <span className="w-3 h-3 bg-green-500 rounded-full"></span>
@@ -154,8 +154,8 @@ export default function Home() {
 
         {/* Call to Action */}
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Ready to Start?</h2>
-          <p className="text-lg text-gray-600 mb-8">
+          <h2 className="text-3xl font-bold text-[var(--foreground)] mb-4">Ready to Start?</h2>
+          <p className="text-lg text-[var(--color-muted)] mb-8">
             Join thousands of puzzle solvers and challenge yourself today!
           </p>
           <Link href="/auth/register">

@@ -61,22 +61,22 @@ export default function LeaderboardPage() {
 
   const getRankClass = (rank: number) => {
     switch (rank) {
-      case 1: return "bg-gradient-to-r from-yellow-50 to-yellow-100 border-yellow-200";
-      case 2: return "bg-gradient-to-r from-gray-50 to-gray-100 border-gray-200";
-      case 3: return "bg-gradient-to-r from-amber-50 to-amber-100 border-amber-200";
-      default: return "bg-white border-gray-200";
+      case 1: return "bg-gradient-to-r from-yellow-50/60 to-yellow-100/60 border-yellow-200/60";
+      case 2: return "bg-gradient-to-r from-gray-50/60 to-gray-100/60 border-gray-200/60";
+      case 3: return "bg-gradient-to-r from-amber-50/60 to-amber-100/60 border-amber-200/60";
+      default: return "bg-[var(--card)] border-[var(--color-border)]";
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen" style={{ background: 'color-mix(in oklab, var(--background) 98%, black)' }}>
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-[var(--card)] border-b border-[var(--color-border)]">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Leaderboard</h1>
-              <p className="text-gray-600 mt-1">Top puzzle solvers</p>
+              <h1 className="text-3xl font-bold text-[var(--foreground)]">Leaderboard</h1>
+              <p className="text-[var(--color-muted)] mt-1">Top puzzle solvers</p>
             </div>
             <div className="flex items-center space-x-4">
               <Link href="/puzzles">
@@ -101,7 +101,7 @@ export default function LeaderboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Puzzle Selector */}
           <div className="lg:col-span-1">
-            <Card>
+            <Card className="bg-[var(--card)] text-[var(--card-foreground)]">
               <CardHeader>
                 <CardTitle className="text-lg">Select Puzzle</CardTitle>
               </CardHeader>
@@ -114,7 +114,7 @@ export default function LeaderboardPage() {
                       "w-full p-3 text-left rounded-lg border-2 transition-colors",
                       selectedPuzzleId === puzzle.id
                         ? "border-blue-500 bg-blue-50"
-                        : "border-gray-200 hover:border-gray-300 bg-white"
+                        : "border-[var(--color-border)] hover:border-[var(--color-border)]/80 bg-[var(--card)]"
                     )}
                   >
                     <div className="font-medium">{puzzle.title}</div>
@@ -142,7 +142,7 @@ export default function LeaderboardPage() {
                   <div className="flex justify-between items-center">
                     <div>
                       <CardTitle className="text-xl">{selectedPuzzle.title}</CardTitle>
-                      <p className="text-gray-600 mt-1">
+                      <p className="text-[var(--color-muted)] mt-1">
                         <span className={puzzleUtils.getDifficultyColor(selectedPuzzle.difficulty)}>
                           {selectedPuzzle.difficulty}
                         </span>
@@ -158,12 +158,12 @@ export default function LeaderboardPage() {
                     <div className="space-y-4">
                       {[...Array(5)].map((_, i) => (
                         <div key={i} className="animate-pulse flex items-center space-x-4 p-4 border rounded-lg">
-                          <div className="w-8 h-8 bg-gray-200 rounded-full"></div>
+                          <div className="w-8 h-8 bg-[var(--color-border)]/40 rounded-full"></div>
                           <div className="flex-1">
-                            <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                            <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+                            <div className="h-4 bg-[var(--color-border)]/40 rounded mb-2"></div>
+                            <div className="h-3 bg-[var(--color-border)]/40 rounded w-2/3"></div>
                           </div>
-                          <div className="w-20 h-4 bg-gray-200 rounded"></div>
+                          <div className="w-20 h-4 bg-[var(--color-border)]/40 rounded"></div>
                         </div>
                       ))}
                     </div>
@@ -191,7 +191,7 @@ export default function LeaderboardPage() {
                                 {getRankIcon(rank)}
                               </div>
                               <div>
-                                <div className="font-medium text-gray-900">
+                                <div className="font-medium text-[var(--foreground)]">
                                   {entry.user_email.split('@')[0]}
                                 </div>
                                 <div className="text-sm text-gray-600">

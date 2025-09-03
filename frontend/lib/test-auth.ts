@@ -6,7 +6,7 @@ export interface TestResult {
   success: boolean;
   message: string;
   error?: string;
-  data?: any;
+  data?: unknown;
 }
 
 export const authTester = {
@@ -72,11 +72,14 @@ export const authTester = {
         message: 'User registration successful',
         data: { userId: user.id, email: user.email }
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error && typeof error === 'object' && 'response' in error
+        ? (error as { response?: { data?: { detail?: string } } }).response?.data?.detail
+        : error instanceof Error ? error.message : 'Unknown error';
       return {
         success: false,
         message: 'User registration failed',
-        error: error.response?.data?.detail || error.message
+        error: errorMessage || 'Registration failed'
       };
     }
   },
@@ -97,11 +100,14 @@ export const authTester = {
           has_token: !!authUtils.getToken()
         }
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error && typeof error === 'object' && 'response' in error
+        ? (error as { response?: { data?: { detail?: string } } }).response?.data?.detail
+        : error instanceof Error ? error.message : 'Unknown error';
       return {
         success: false,
         message: 'User login failed',
-        error: error.response?.data?.detail || error.message
+        error: errorMessage || 'Login failed'
       };
     }
   },
@@ -115,11 +121,14 @@ export const authTester = {
         message: 'Profile fetch successful',
         data: { userId: user.id, email: user.email, isActive: user.is_active }
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error && typeof error === 'object' && 'response' in error
+        ? (error as { response?: { data?: { detail?: string } } }).response?.data?.detail
+        : error instanceof Error ? error.message : 'Unknown error';
       return {
         success: false,
         message: 'Profile fetch failed',
-        error: error.response?.data?.detail || error.message
+        error: errorMessage || 'Profile fetch failed'
       };
     }
   },

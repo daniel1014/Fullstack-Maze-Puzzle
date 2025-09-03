@@ -25,11 +25,15 @@ export default function GameModal({ open, type, title, message, onClose, soundUr
         const audio = new Audio(soundUrl);
         audio.volume = 0.4;
         void audio.play();
-      } catch (_) {}
+      } catch {
+        // Ignore audio play errors
+      }
       return;
     }
     try {
-      const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const AudioContextClass = window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      if (!AudioContextClass) return;
+      const ctx = new AudioContextClass();
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = type === 'success' ? 'triangle' : 'sawtooth';
@@ -42,8 +46,10 @@ export default function GameModal({ open, type, title, message, onClose, soundUr
         osc.stop();
         ctx.close();
       }, 220);
-    } catch (_) {}
-  }, [open, type]);
+    } catch {
+        // Ignore WebAudio errors
+      }
+  }, [open, type, soundUrl]);
 
   if (!open) return null;
 
@@ -55,22 +61,22 @@ export default function GameModal({ open, type, title, message, onClose, soundUr
       role="dialog"
       aria-modal="true"
     >
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden animate-in zoom-in-50 duration-200">
-        <div className={`p-6 ${isSuccess ? 'bg-green-50' : 'bg-rose-50'} border-b ${isSuccess ? 'border-green-100' : 'border-rose-100'}`}>
+      <div className="w-full max-w-md bg-[var(--card)] rounded-2xl shadow-2xl border border-[var(--color-border)] overflow-hidden animate-in zoom-in-50 duration-200">
+        <div className={`p-6 ${isSuccess ? 'bg-green-50/50' : 'bg-rose-50/50'} border-b ${isSuccess ? 'border-green-100/60' : 'border-rose-100/60'}`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               {isSuccess ? (
-                <Trophy className="w-6 h-6 text-green-600" />
+                <Trophy className="w-6 h-6 text-green-500" />
               ) : (
-                <XCircle className="w-6 h-6 text-rose-600" />
+                <XCircle className="w-6 h-6 text-rose-500" />
               )}
-              <h3 className={`text-lg font-bold ${isSuccess ? 'text-green-700' : 'text-rose-700'}`}>{title}</h3>
+              <h3 className={`text-lg font-bold ${isSuccess ? 'text-green-600' : 'text-rose-600'}`}>{title}</h3>
             </div>
             <Volume2 className="w-4 h-4 text-gray-400" aria-hidden="true" />
           </div>
         </div>
         <div className="p-6">
-          <p className="text-gray-700 mb-6 leading-relaxed">{message}</p>
+          <p className="text-[var(--foreground)]/90 mb-6 leading-relaxed">{message}</p>
           <div className="flex justify-center">
             <Button onClick={onClose} variant="outline" className="min-w-fit">
               {isSuccess ? 'Awesome! Continue' : 'Try Again'}

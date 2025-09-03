@@ -141,7 +141,7 @@ export default function AuthTestPage() {
                       </div>
                     )}
                     
-                    {result.data && (
+                    {result.data != null && (
                       <div className="mt-2">
                         <details>
                           <summary className="text-sm text-gray-600 cursor-pointer hover:text-gray-800">
@@ -165,7 +165,7 @@ export default function AuthTestPage() {
               <h4 className="font-medium text-yellow-800 mb-2">Before Running Tests:</h4>
               <ol className="list-decimal list-inside space-y-1 text-yellow-700 text-sm">
                 <li>Ensure your DigitalOcean droplet is running</li>
-                <li>Update <code>.env.production</code> with your droplet's IP address</li>
+                <li>Update <code>.env.production</code> with your droplet&apos;s IP address</li>
                 <li>Verify your backend is accepting CORS requests from your frontend domain</li>
                 <li>Check that your database is properly configured and running</li>
               </ol>

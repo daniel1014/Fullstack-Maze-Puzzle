@@ -27,8 +27,11 @@ export default function LoginPage() {
       const response = await authAPI.login(formData.email, formData.password);
       authUtils.setToken(response.access_token);
       router.push('/puzzles');
-    } catch (err: any) {
-      setError(err.response?.data?.detail || 'Login failed. Please try again.');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error && 'response' in err 
+        ? (err as { response?: { data?: { detail?: string } } }).response?.data?.detail
+        : 'Login failed. Please try again.';
+      setError(errorMessage || 'Login failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -99,7 +102,7 @@ export default function LoginPage() {
           </CardContent>
           <CardFooter className="justify-center">
             <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link href="/auth/register" className="font-medium text-blue-600 hover:text-blue-500">
                 Sign up
               </Link>

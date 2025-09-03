@@ -27,11 +27,11 @@ export const MazeHUD = memo(function MazeHUD({
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'playing': return 'text-green-600 bg-green-50 border-green-200';
-      case 'completed': return 'text-blue-600 bg-blue-50 border-blue-200';
-      case 'blocked': return 'text-orange-600 bg-orange-50 border-orange-200';
-      case 'submitted': return 'text-purple-600 bg-purple-50 border-purple-200';
-      default: return 'text-gray-600 bg-gray-50 border-gray-200';
+      case 'playing': return 'text-green-500 bg-[color-mix(in_oklab,var(--edukids-success)_20%,transparent)] border-green-400/30';
+      case 'completed': return 'text-blue-400 bg-[color-mix(in_oklab,var(--edukids-primary)_20%,transparent)] border-blue-400/30';
+      case 'blocked': return 'text-amber-400 bg-[color-mix(in_oklab,var(--edukids-warning)_18%,transparent)] border-amber-400/30';
+      case 'submitted': return 'text-purple-400 bg-[color-mix(in_oklab,#a855f7_18%,transparent)] border-purple-400/30';
+      default: return 'text-[var(--color-muted)] bg-[var(--muted)] border-[var(--border)]';
     }
   };
 

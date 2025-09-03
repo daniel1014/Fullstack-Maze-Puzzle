@@ -24,7 +24,7 @@ export const puzzleUtils = {
   },
 
   getCellClass: (cell: string, isPlayer: boolean, isTrace: boolean): string => {
-    const baseClasses = 'w-12 h-12 border border-gray-300 flex items-center justify-center text-lg font-bold';
+    const baseClasses = 'w-12 h-12 border border-[var(--color-border)] flex items-center justify-center text-lg font-bold';
     
     if (isPlayer) {
       return cn(baseClasses, 'bg-blue-500 text-white');
@@ -37,14 +37,14 @@ export const puzzleUtils = {
     switch (cell) {
       case 'S': return cn(baseClasses, 'bg-green-200');
       case 'G': return cn(baseClasses, 'bg-red-200');
-      case 'W': return cn(baseClasses, 'bg-gray-600 text-white');
+      case 'W': return cn(baseClasses, 'bg-gray-700 text-white');
       case 'K': return cn(baseClasses, 'bg-yellow-200');
       case 'D': return cn(baseClasses, 'bg-amber-600 text-white');
       default:
         if (cell.startsWith('P')) {
           return cn(baseClasses, 'bg-purple-200');
         }
-        return cn(baseClasses, 'bg-white hover:bg-gray-50');
+        return cn(baseClasses, 'bg-[var(--card)] hover:bg-[var(--muted)]');
     }
   },
 

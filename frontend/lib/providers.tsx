@@ -13,10 +13,13 @@ export default function Providers({ children }: ProvidersProps) {
       queries: {
         staleTime: 1000 * 60 * 5, // 5 minutes
         refetchOnWindowFocus: false, // Prevent refetch during gameplay
-        retry: (failureCount, error: any) => {
+        retry: (failureCount, error: unknown) => {
           // Don't retry on 401 errors
-          if (error?.response?.status === 401) {
-            return false;
+          if (error && typeof error === 'object' && 'response' in error) {
+            const errorResponse = error as { response?: { status?: number } };
+            if (errorResponse.response?.status === 401) {
+              return false;
+            }
           }
           return failureCount < 3;
         },
@@ -50,5 +53,9 @@ export default function Providers({ children }: ProvidersProps) {
 
 // Lightweight ThemeContext for global toggle
 type ThemeContextValue = { theme: 'light' | 'dark'; setTheme: (t: 'light' | 'dark') => void };
-export const ThemeContext = (globalThis as any).__theme_context ||
-  (((globalThis as any).__theme_context = (require('react') as typeof import('react')).createContext<ThemeContextValue>({ theme: 'light', setTheme: () => {} })), (globalThis as any).__theme_context);
+import { createContext } from 'react';
+
+export const ThemeContext = createContext<ThemeContextValue>({
+  theme: 'light',
+  setTheme: () => {}
+});

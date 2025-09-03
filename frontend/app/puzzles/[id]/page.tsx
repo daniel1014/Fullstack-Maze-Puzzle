@@ -264,7 +264,7 @@ export default function PuzzlePage({ params }: { params: Promise<{ id: string }>
     if (puzzle) {
       dispatch({ type: 'INIT', puzzle });
     }
-  }, [puzzle?.id]);
+  }, [puzzle]);
 
   // Submit attempt mutation
   const submitMutation = useMutation({
@@ -391,7 +391,7 @@ export default function PuzzlePage({ params }: { params: Promise<{ id: string }>
   // Memoized traceSet for better render performance
   const memoizedTraceSet = useMemo(() => {
     return new Set(gameState.trace.map(pos => `${pos.r}-${pos.c}`));
-  }, [gameState.trace.length]);
+  }, [gameState.trace]);
 
   if (!mounted || !isAuthed || Number.isNaN(puzzleId)) {
     return null;
@@ -399,10 +399,10 @@ export default function PuzzlePage({ params }: { params: Promise<{ id: string }>
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'color-mix(in oklab, var(--background) 98%, black)' }}>
         <div className="text-center">
           <div className="text-6xl mb-4">🧩</div>
-          <p className="text-lg text-gray-600">Loading puzzle...</p>
+          <p className="text-lg text-[var(--color-muted)]">Loading puzzle...</p>
         </div>
       </div>
     );
@@ -410,13 +410,13 @@ export default function PuzzlePage({ params }: { params: Promise<{ id: string }>
 
   if (error || !puzzle) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'color-mix(in oklab, var(--background) 98%, black)' }}>
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle className="text-red-600 text-center">Puzzle Not Found</CardTitle>
+            <CardTitle className="text-red-500 text-center">Puzzle Not Found</CardTitle>
           </CardHeader>
           <CardContent className="text-center">
-            <p className="text-gray-600 mb-4">The puzzle you&apos;re looking for doesn&apos;t exist or couldn&apos;t be loaded.</p>
+            <p className="text-[var(--color-muted)] mb-4">The puzzle you&apos;re looking for doesn&apos;t exist or couldn&apos;t be loaded.</p>
             <Button onClick={() => router.push('/puzzles')} className="w-full">
               Back to Puzzles
             </Button>
@@ -430,22 +430,22 @@ export default function PuzzlePage({ params }: { params: Promise<{ id: string }>
   const currentElapsedTime = liveElapsedTime;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen" style={{ background: 'color-mix(in oklab, var(--background) 98%, black)' }}>
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-[var(--card)] border-b border-[var(--color-border)]">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
               <Button
                 variant="ghost"
                 onClick={() => router.push('/puzzles')}
-                className="text-gray-600 hover:text-gray-900"
+                className="text-[var(--color-muted)] hover:text-[var(--foreground)]"
               >
                 ← Back to Puzzles
               </Button>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">{puzzle.title} <span aria-hidden>🎉</span></h1>
-                <p className="text-sm text-gray-500 capitalize">
+                <h1 className="text-2xl font-bold text-[var(--foreground)]">{puzzle.title} <span aria-hidden>🎉</span></h1>
+                <p className="text-sm text-[var(--color-muted)] capitalize">
                   Difficulty: <span className={puzzleUtils.getDifficultyColor(puzzle.difficulty)}>
                     {puzzle.difficulty}
                   </span>
@@ -467,11 +467,11 @@ export default function PuzzlePage({ params }: { params: Promise<{ id: string }>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Game Grid */}
           <div className="lg:col-span-7">
-            <Card>
+            <Card className="bg-[var(--card)] text-[var(--card-foreground)]">
               <CardHeader>
                 <div className="flex justify-between items-center">
-                  <CardTitle>Maze Grid</CardTitle>
-                  <div className="text-sm text-gray-500">
+                  <CardTitle className="text-[var(--card-foreground)]">Maze Grid</CardTitle>
+                  <div className="text-sm text-[var(--color-muted)]">
                     {puzzle.grid.rows}×{puzzle.grid.cols} grid
                   </div>
                 </div>
@@ -485,7 +485,7 @@ export default function PuzzlePage({ params }: { params: Promise<{ id: string }>
                 />
 
                 {/* Legend */}
-                <div className="mt-4 grid grid-cols-3 md:grid-cols-6 gap-2 text-xs text-gray-600">
+                <div className="mt-4 grid grid-cols-3 md:grid-cols-6 gap-2 text-xs text-[var(--color-muted)]">
                   <div className="flex items-center space-x-1.5"><span className="text-base">🏁</span><span>Start</span></div>
                   <div className="flex items-center space-x-1.5"><span className="text-base">🎯</span><span>Goal</span></div>
                   <div className="flex items-center space-x-1.5"><span className="text-base">🗝️</span><span>Key</span></div>
@@ -498,7 +498,7 @@ export default function PuzzlePage({ params }: { params: Promise<{ id: string }>
                 <div className="mt-4">
                   <MazeControls
                     mode="movement-only"
-                    status={gameState.status as any}
+                    status={gameState.status}
                     canSubmit={false}
                     isSubmitting={false}
                     onMove={handleMove}
