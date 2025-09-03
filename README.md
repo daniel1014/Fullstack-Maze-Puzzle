@@ -8,7 +8,7 @@ A full-stack interactive maze puzzle platform built with FastAPI and Next.js, fe
 ## 🚀 Quick Start
 
 ### Deployment link
-URL: https://faithfulstack.com/puzzlegame or https://fullstack-maze-puzzle.vercel.app/puzzlegame
+URL: https://faithfulstack.com/puzzlegame (recommended) or https://fullstack-maze-puzzle.vercel.app/puzzlegame (legacy)
 
 ### Demo login details (you can also register a new account)
 email: test@example.com
