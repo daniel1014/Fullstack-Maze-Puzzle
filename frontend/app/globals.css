@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+:root {
+  /* Base surface colors */
+  --background: #fcfdff; /* soft sky white */
+  --foreground: #0f172a; /* slate-900 */
+
+  /* EduKids theme palette */
+  --edukids-primary: #6366f1; /* indigo-500 */
+  --edukids-secondary: #06b6d4; /* cyan-500 */
+  --edukids-accent: #f59e0b; /* amber-500 */
+  --edukids-success: #22c55e; /* emerald-500 */
+  --edukids-warning: #f59e0b; /* amber-500 */
+  --edukids-danger: #ef4444;  /* red-500 */
+  --edukids-muted: #64748b;   /* slate-500 */
+
+  /* Shapes */
+  --edukids-radius: 14px;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--edukids-primary);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--edukids-secondary);
+  --color-secondary-foreground: #ffffff;
+  --color-accent: var(--edukids-accent);
+  --color-accent-foreground: #1f2937;
+  --color-success: var(--edukids-success);
+  --color-warning: var(--edukids-warning);
+  --color-danger: var(--edukids-danger);
+  --color-muted: var(--edukids-muted);
+  --color-ring: var(--edukids-secondary);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --radius-lg: var(--edukids-radius);
+}
+
+/* Dark theme via data attribute to support manual toggle */
+[data-theme='dark'] {
+  --background: #0b1220; /* deep navy */
+  --foreground: #e5e7eb; /* gray-200 */
+  /* Optionally tweak brand contrast for dark */
+  --edukids-primary: #818cf8; /* indigo-400 */
+  --edukids-secondary: #22d3ee; /* cyan-400 */
+  --edukids-accent: #fbbf24; /* amber-400 */
+  --edukids-success: #34d399; /* emerald-400 */
+  --edukids-warning: #f59e0b; /* amber-500 */
+  --edukids-danger: #f87171;  /* red-400 */
+  --edukids-muted: #94a3b8;   /* slate-400 */
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+/* Small, friendly brand touches */
+.brand-gradient {
+  background-image: linear-gradient(135deg, color-mix(in oklab, var(--edukids-primary) 92%, white), color-mix(in oklab, var(--edukids-secondary) 92%, white));
+}
+
+.rounded-brand {
+  border-radius: var(--edukids-radius);
+}
