@@ -206,6 +206,61 @@ components/
 
 ## 🚀 Production Deployment
 
+### Production Routing (Cloudflare Worker + Vercel + FastAPI)
+
+Our production stack routes all public traffic through Cloudflare Workers to ensure HTTPS, avoid mixed content, and keep the backend origin private:
+
+- Browser calls go to `https://faithfulstack.com/puzzlegame/...`
+- API calls use `https://faithfulstack.com/puzzlegame/api/...`
+- Cloudflare Worker strips the `/puzzlegame/api` prefix, normalizes paths to the FastAPI scheme, and proxies to the internal backend origin `http://direct.faithfulstack.com:8000`
+- FastAPI exposes routes under:
+  - `/auth/*`
+  - `/api/puzzles/*`
+  - `/api/leaderboard*`
+
+Frontend configuration in production:
+
+```env
+NEXT_PUBLIC_API_URL=https://faithfulstack.com/puzzlegame/api
+```
+
+Frontend axios usage (already implemented):
+
+```ts
+// Base URL comes from NEXT_PUBLIC_API_URL
+// Paths include the leading /api or /auth to match FastAPI routers
+api.get('/api/puzzles');
+api.get('/api/puzzles/1');
+api.post('/api/puzzles/1/attempts', { moves: [...] });
+api.post('/auth/token', formData);
+```
+
+Cloudflare Worker API rule (normalizes single or double "api" and proxies without redirect):
+
+```js
+if (url.pathname.startsWith('/puzzlegame/api/')) {
+  const backendServer = 'http://direct.faithfulstack.com:8000';
+  // e.g. /puzzlegame/api/puzzles -> /puzzles, or /puzzlegame/api/api/puzzles -> /api/puzzles
+  const stripped = url.pathname.replace('/puzzlegame/api', '');
+  const normalized = stripped.startsWith('/api') ? stripped : '/api' + stripped; // ensure FastAPI prefix
+  const targetUrl = backendServer + normalized + url.search;
+  // Proxy via fetch with redirect: 'manual' to avoid 30x to HTTP
+  const headers = new Headers(request.headers);
+  headers.delete('host');
+  return fetch(targetUrl, {
+    method: request.method,
+    headers,
+    body: (request.method === 'GET' || request.method === 'HEAD') ? undefined : request.body,
+    redirect: 'manual',
+  });
+}
+```
+
+Troubleshooting quick reference:
+- Mixed Content error (HTTPS → HTTP): ensure Worker proxies (no 30x) and that the browser calls `faithfulstack.com` paths only
+- 404 on `/puzzlegame/api/puzzles`: add the missing `/api` segment or enable the normalization above; backend expects `/api/puzzles`
+- Expected status without token on puzzles endpoints is `401` (auth-protected); `200` on `/health`
+
 ### Backend Deployment (Digital Ocean/AWS)
 ```bash
 # Production server setup
@@ -237,7 +292,7 @@ npm run build
 npm start  # Production server
 
 # Environment variables
-NEXT_PUBLIC_API_URL=https://your-api-domain.com
+NEXT_PUBLIC_API_URL=https://faithfulstack.com/puzzlegame/api
 ```
 
 ## 🛠️ Development Approach
