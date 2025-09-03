@@ -119,12 +119,12 @@ export const authAPI = {
 // Puzzle API
 export const puzzleAPI = {
   getPuzzles: async (): Promise<Puzzle[]> => {
-    const response = await api.get('/api/puzzles');
+    const response = await api.get('/puzzles');
     return response.data;
   },
 
   getPuzzle: async (id: number): Promise<PuzzleDetail> => {
-    const response = await api.get(`/api/puzzles/${id}`);
+    const response = await api.get(`/puzzles/${id}`);
     return response.data;
   },
 
@@ -133,7 +133,7 @@ export const puzzleAPI = {
     moves: string[], 
     clientTimeMs?: number
   ): Promise<AttemptResponse> => {
-    const response = await api.post(`/api/puzzles/${puzzleId}/attempts`, {
+    const response = await api.post(`/puzzles/${puzzleId}/attempts`, {
       moves,
       client_time_ms: clientTimeMs,
     });
@@ -141,7 +141,7 @@ export const puzzleAPI = {
   },
 
   getAttempts: async (puzzleId: number, limit = 10) => {
-    const response = await api.get(`/api/puzzles/${puzzleId}/attempts?limit=${limit}`);
+    const response = await api.get(`/puzzles/${puzzleId}/attempts?limit=${limit}`);
     return response.data;
   },
 };
@@ -154,7 +154,7 @@ export const leaderboardAPI = {
     successOnly = true
   ): Promise<LeaderboardEntry[]> => {
     const response = await api.get(
-      `/api/leaderboard?puzzle_id=${puzzleId}&limit=${limit}&success_only=${successOnly}`
+      `/leaderboard?puzzle_id=${puzzleId}&limit=${limit}&success_only=${successOnly}`
     );
     return response.data;
   },
