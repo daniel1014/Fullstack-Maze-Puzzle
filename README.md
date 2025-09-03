@@ -7,6 +7,13 @@ A full-stack interactive maze puzzle platform built with FastAPI and Next.js, fe
 
 ## 🚀 Quick Start
 
+### Deployment link
+URL: https://faithfulstack.com/puzzlegame or https://fullstack-maze-puzzle.vercel.app/puzzlegame
+
+### Demo login details (you can also register a new account)
+email: test@example.com
+password: test123
+
 ### Prerequisites
 - Node.js 18+ and npm
 - Python 3.9+ and pip
