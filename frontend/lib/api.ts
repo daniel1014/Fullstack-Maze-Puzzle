@@ -93,7 +93,7 @@ export interface LeaderboardEntry {
 // Auth API
 export const authAPI = {
   register: async (email: string, password: string): Promise<User> => {
-    const response = await api.post('/auth/register', { email, password });
+    const response = await api.post('/api/auth/register', { email, password });
     return response.data;
   },
 
@@ -101,8 +101,8 @@ export const authAPI = {
     const formData = new FormData();
     formData.append('username', email);
     formData.append('password', password);
-    
-    const response = await api.post('/auth/token', formData, {
+
+    const response = await api.post('/api/auth/token', formData, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
@@ -111,7 +111,7 @@ export const authAPI = {
   },
 
   getMe: async (): Promise<User> => {
-    const response = await api.get('/auth/me');
+    const response = await api.get('/api/auth/me');
     return response.data;
   },
 };
@@ -119,21 +119,21 @@ export const authAPI = {
 // Puzzle API
 export const puzzleAPI = {
   getPuzzles: async (): Promise<Puzzle[]> => {
-    const response = await api.get('/puzzles');
+    const response = await api.get('/api/puzzles');
     return response.data;
   },
 
   getPuzzle: async (id: number): Promise<PuzzleDetail> => {
-    const response = await api.get(`/puzzles/${id}`);
+    const response = await api.get(`/api/puzzles/${id}`);
     return response.data;
   },
 
   submitAttempt: async (
-    puzzleId: number, 
-    moves: string[], 
+    puzzleId: number,
+    moves: string[],
     clientTimeMs?: number
   ): Promise<AttemptResponse> => {
-    const response = await api.post(`/puzzles/${puzzleId}/attempts`, {
+    const response = await api.post(`/api/puzzles/${puzzleId}/attempts`, {
       moves,
       client_time_ms: clientTimeMs,
     });
@@ -141,7 +141,7 @@ export const puzzleAPI = {
   },
 
   getAttempts: async (puzzleId: number, limit = 10) => {
-    const response = await api.get(`/puzzles/${puzzleId}/attempts?limit=${limit}`);
+    const response = await api.get(`/api/puzzles/${puzzleId}/attempts?limit=${limit}`);
     return response.data;
   },
 };
@@ -149,12 +149,12 @@ export const puzzleAPI = {
 // Leaderboard API
 export const leaderboardAPI = {
   getLeaderboard: async (
-    puzzleId: number, 
-    limit = 10, 
+    puzzleId: number,
+    limit = 10,
     successOnly = true
   ): Promise<LeaderboardEntry[]> => {
     const response = await api.get(
-      `/leaderboard?puzzle_id=${puzzleId}&limit=${limit}&success_only=${successOnly}`
+      `/api/leaderboard?puzzle_id=${puzzleId}&limit=${limit}&success_only=${successOnly}`
     );
     return response.data;
   },
